@@ -40,7 +40,9 @@ class ASSeatsSelectionView: UIView, UIScrollViewDelegate, ASSeatsDelegate {
     }
     
     lazy var hallLogoView: ASHallLogoView = {
-        var hallLogoView = ASHallLogoView()
+        var hallLogoView = ASHallLogoView(frame: CGRect(x: 0, y: 0, width: 100, height: 20))
+        hallLogoView.hallName = "银幕"
+        seatsScrollView.addSubview(hallLogoView)
         return hallLogoView
     }()
     
@@ -113,6 +115,17 @@ class ASSeatsSelectionView: UIView, UIScrollViewDelegate, ASSeatsDelegate {
     }
     
     func setupViews() -> Void {
+        
+    }
+    
+    func updateHallLogoView() -> Void {
+        let hallLogoView = self.hallLogoView
+        var frame = hallLogoView.frame
+        frame.origin.y = seatsScrollView.contentOffset.y
+        hallLogoView.frame = frame
+        var center = hallLogoView.center
+        center.x = seatsView.center.x
+        hallLogoView.center = center
     }
     
     func updateRowIndexView() -> Void {
@@ -140,6 +153,7 @@ class ASSeatsSelectionView: UIView, UIScrollViewDelegate, ASSeatsDelegate {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         updateRowIndexView()
+        updateHallLogoView()
     }
     
     
@@ -179,6 +193,7 @@ class ASSeatsSelectionView: UIView, UIScrollViewDelegate, ASSeatsDelegate {
     func scrollViewDidZoom(_ scrollView: UIScrollView) {
         seatsView.center = contentCenter(forBoundingSize: seatsScrollView.bounds.size, contentSize: seatsScrollView.contentSize)
         updateRowIndexView()
+        updateHallLogoView()
     }
     
     func contentCenter(forBoundingSize boundingSize: CGSize, contentSize: CGSize) -> CGPoint {
