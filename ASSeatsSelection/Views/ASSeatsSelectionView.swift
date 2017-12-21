@@ -12,6 +12,22 @@ import UIKit
     @objc optional func seatsSelectionView(_ seatsSelectionView: ASSeatsSelectionView, didSelectAt row: Int, column: Int)
 }
 
+@objc protocol ASSeatsSelectionViewDataSource: NSObjectProtocol {
+    
+    func numberOfRowsIn(seatsSelectionView: ASSeatsSelectionView) -> Int
+    
+    @objc optional func  seatsSelectionView(seatsSelectionView: ASSeatsSelectionView, numberOfColumnsIn row: Int) -> Int
+    
+    func seatsSelectionView(seatsSelectionView: ASSeatsSelectionView, seatImageIn row:Int, column:Int, completion:(_ image: UIImage?)->Void)
+    
+    @objc optional func seatsSelectionView(seatsSelectionView: ASSeatsSelectionView, seatWidthIn row:Int, column: Int) -> CGFloat
+    
+    @objc optional func heightForRowIn(seatsSelectionView: ASSeatsSelectionView) -> CGFloat
+    
+    @objc optional func seatsSelectionView(seatsSelectionView: ASSeatsSelectionView, indexTitleIn row: Int) -> String
+
+}
+
 class ASSeatsSelectionView: UIView, UIScrollViewDelegate, ASSeatsDelegate {
     
     var soldImage = UIImage(named: "seat_sold")
@@ -59,15 +75,27 @@ class ASSeatsSelectionView: UIView, UIScrollViewDelegate, ASSeatsDelegate {
         return seatsView
     }()
     
-    var dataSource: ASSeatsDataSource? {
+    lazy var rowIndexView: ASRowIndexView = {
+        var rowIndexView = ASRowIndexView(frame: CGRect(x: 0, y: -10, width: 13, height: bounds.height))
+        rowIndexView.headerAndFooterHight = 10
+        seatsScrollView.addSubview(rowIndexView)
+        return rowIndexView
+    }()
+    
+    var dataSource: ASSeatsSelectionViewDataSource? {
         didSet {
-            seatsView.dataSource = dataSource
+            seatsView.dataSource = self
             seatsView.frame = CGRect(x: 0, y: 0, width: seatsView.width, height: seatsView.height)
-//            seatsScrollView.contentInset = UIEdgeInsetsMake(60, (seatsScrollView.bounds.width-seatsView.width)/2, 60, (seatsScrollView.bounds.width-seatsView.width)/2)
+            let horizontalInset = (seatsScrollView.bounds.width-seatsView.width) / 2
+            print("horizontalInset \(horizontalInset)")
+            seatsScrollView.contentInset = UIEdgeInsetsMake(60, horizontalInset, 60, horizontalInset)
             let rect = self.zoomRectFor(scrollView: self.seatsScrollView, scale: 2.5, center: seatsView.center)
             seatsScrollView.zoom(to: rect, animated: true)
+            rowIndexView.dataSource = self
+            updateRowIndexView()
         }
     }
+    
     var delegate: ASSeatsSelectionViewDelegate? {
         didSet {
             seatsView.delegate = self
@@ -87,6 +115,16 @@ class ASSeatsSelectionView: UIView, UIScrollViewDelegate, ASSeatsDelegate {
     func setupViews() -> Void {
     }
     
+    func updateRowIndexView() -> Void {
+        rowIndexView.contentHeight = seatsView.frame.height
+        var frame = rowIndexView.frame
+        frame.origin.x = seatsScrollView.contentOffset.x + 10
+        rowIndexView.frame = frame
+        var center = rowIndexView.center
+        center.y = seatsView.center.y
+        rowIndexView.center = center
+    }
+    
     /*
     // Only override draw() if you perform custom drawing.
     // An empty implementation adversely affects performance during animation.
@@ -98,6 +136,10 @@ class ASSeatsSelectionView: UIView, UIScrollViewDelegate, ASSeatsDelegate {
     // MARK: - UIScrollViewDelegate
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return seatsView
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        updateRowIndexView()
     }
     
     
@@ -136,6 +178,7 @@ class ASSeatsSelectionView: UIView, UIScrollViewDelegate, ASSeatsDelegate {
     
     func scrollViewDidZoom(_ scrollView: UIScrollView) {
         seatsView.center = contentCenter(forBoundingSize: seatsScrollView.bounds.size, contentSize: seatsScrollView.contentSize)
+        updateRowIndexView()
     }
     
     func contentCenter(forBoundingSize boundingSize: CGSize, contentSize: CGSize) -> CGPoint {
@@ -165,4 +208,41 @@ class ASSeatsSelectionView: UIView, UIScrollViewDelegate, ASSeatsDelegate {
         self.seatsView.layoutIfNeeded()
     }
 
+}
+
+extension ASSeatsSelectionView: ASSeatsDataSource, ASRowIndexViewDataSource {
+    
+    // MARK: - ASSeatsDataSource
+    func numberOfRows() -> Int {
+        return dataSource?.numberOfRowsIn(seatsSelectionView: self) ?? 0
+    }
+    
+    func numberOfSeatsFor(row: Int) -> Int {
+        return dataSource?.seatsSelectionView?(seatsSelectionView: self, numberOfColumnsIn: row) ?? 0
+    }
+    
+    func seatImageFor(_ row: Int, column: Int, completion: (UIImage?) -> Void) {
+        dataSource?.seatsSelectionView(seatsSelectionView: self, seatImageIn: row, column: column, completion: { (image) in
+            completion(image)
+        })
+    }
+    
+    func widthFor(_ row: Int, column: Int) -> CGFloat {
+        return dataSource?.seatsSelectionView?(seatsSelectionView: self, seatWidthIn: row, column: column) ?? 10
+    }
+    
+    func heightForSeat() -> CGFloat {
+        return dataSource?.heightForRowIn?(seatsSelectionView: self) ?? 10
+    }
+    
+    // MARK: - ASRowIndexViewDataSource
+    
+    func numberOfRowsIn(rowIndexView: ASRowIndexView) -> Int {
+        return dataSource?.numberOfRowsIn(seatsSelectionView: self) ?? 0
+    }
+    
+    func rowIndexView(rowIndexView: ASRowIndexView, titleIn row: Int) -> String {
+        return dataSource?.seatsSelectionView?(seatsSelectionView: self, indexTitleIn: row) ?? " "
+    }
+    
 }

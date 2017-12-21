@@ -24,6 +24,7 @@
 		F92B2FF81FE9133700ABE5D7 /* seat_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F92B2FF51FE9133700ABE5D7 /* seat_selected@2x.png */; };
 		F92B2FF91FE9133700ABE5D7 /* seat_sold@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F92B2FF61FE9133700ABE5D7 /* seat_sold@2x.png */; };
 		F92B2FFC1FE9142C00ABE5D7 /* ASFileUtiles.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92B2FFB1FE9142C00ABE5D7 /* ASFileUtiles.swift */; };
+		F9E931391FEB4369008FBAC5 /* ASRowIndexView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E931381FEB4369008FBAC5 /* ASRowIndexView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +47,7 @@
 		F92B2FF51FE9133700ABE5D7 /* seat_selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "seat_selected@2x.png"; sourceTree = "<group>"; };
 		F92B2FF61FE9133700ABE5D7 /* seat_sold@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "seat_sold@2x.png"; sourceTree = "<group>"; };
 		F92B2FFB1FE9142C00ABE5D7 /* ASFileUtiles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ASFileUtiles.swift; sourceTree = "<group>"; };
+		F9E931381FEB4369008FBAC5 /* ASRowIndexView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ASRowIndexView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +103,7 @@
 				F92B2FE91FE8E90100ABE5D7 /* ASCenterLineView.swift */,
 				F92B2FEB1FE8F65100ABE5D7 /* ASSeatButton.swift */,
 				F92B2FEF1FE9002500ABE5D7 /* ASSeatsView.swift */,
+				F9E931381FEB4369008FBAC5 /* ASRowIndexView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -217,6 +220,7 @@
 				F92B2FF21FE90FC800ABE5D7 /* ASSeatsSelectionConfigure.swift in Sources */,
 				F92B2FE81FE8E75300ABE5D7 /* ASHallLogoView.swift in Sources */,
 				F92B2FEE1FE8F8C800ABE5D7 /* ASSeatModel.swift in Sources */,
+				F9E931391FEB4369008FBAC5 /* ASRowIndexView.swift in Sources */,
 				F92B2FE41FE8E4FB00ABE5D7 /* ASSeatsSelectionView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -19,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WCQ-QX-V3T" customClass="ASSeatsSelectionView" customModule="ASSeatsSelection" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="64" width="375" height="411"/>
+                                <rect key="frame" x="0.0" y="128" width="375" height="348"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
