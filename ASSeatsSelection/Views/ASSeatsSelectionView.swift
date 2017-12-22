@@ -33,6 +33,11 @@ class ASSeatsSelectionView: UIView, UIScrollViewDelegate, ASSeatsDelegate {
     var soldImage = UIImage(named: "seat_sold")
     var availableImage = UIImage(named: "seat_available")
     var selectedImage = UIImage(named: "seat_selected")
+    var hallLogoImage = UIImage(named: "hall_logo_view") {
+        didSet {
+            
+        }
+    }
     var zoomScale: CGFloat = 2.5 {
         didSet {
             self.seatsScrollView.setZoomScale(zoomScale, animated: true)
@@ -40,8 +45,9 @@ class ASSeatsSelectionView: UIView, UIScrollViewDelegate, ASSeatsDelegate {
     }
     
     lazy var hallLogoView: ASHallLogoView = {
-        var hallLogoView = ASHallLogoView(frame: CGRect(x: 0, y: 0, width: 100, height: 20))
+        var hallLogoView = ASHallLogoView(frame: CGRect(x: 0, y: 0, width: 200, height: 20))
         hallLogoView.hallName = "银幕"
+        hallLogoView.image = hallLogoImage
         seatsScrollView.addSubview(hallLogoView)
         return hallLogoView
     }()

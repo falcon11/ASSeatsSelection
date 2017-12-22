@@ -32,7 +32,7 @@ class ASHallLogoView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = UIColor.gray
+        self.backgroundColor = UIColor.clear
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -41,7 +41,7 @@ class ASHallLogoView: UIView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-//        logoImageView.frame = bounds
+        logoImageView.frame = bounds
     }
     
     // Only override draw() if you perform custom drawing.
@@ -49,19 +49,23 @@ class ASHallLogoView: UIView {
     override func draw(_ rect: CGRect) {
         // Drawing code
         super.draw(rect)
-//        guard let image = image else { return }
-//        image.draw(at: CGPoint.zero)
-        
-        guard let hallName = hallName else {
-            return
+        guard let image = image else { return }
+        let size = image.size
+        UIGraphicsBeginImageContextWithOptions(size, false, 0)
+        image.draw(at: CGPoint.zero)
+        if hallName != nil {
+            let attributes = [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 9),
+                              NSAttributedStringKey.foregroundColor: UIColor.black,
+                              ]
+            let attributeString = NSAttributedString(string: hallName!, attributes: attributes)
+            let strSize = attributeString.size()
+            attributeString.draw(at: CGPoint(x: (size.width - strSize.width)/2, y: (size.height - strSize.height)/2))
         }
-//        let size = image.size
-        let attributes = [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 10),
-                          NSAttributedStringKey.foregroundColor: UIColor.black,
-                          ]
-        let attributeString = NSAttributedString(string: hallName, attributes: attributes)
-        let strSize = attributeString.size()
-        attributeString.draw(at: CGPoint(x: (bounds.width - strSize.width)/2, y: (bounds.height - strSize.height)/2))
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        if newImage != nil {
+            logoImageView.image = newImage
+        }
     }
 
 }

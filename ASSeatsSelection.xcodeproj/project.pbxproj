@@ -25,6 +25,7 @@
 		F92B2FF91FE9133700ABE5D7 /* seat_sold@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F92B2FF61FE9133700ABE5D7 /* seat_sold@2x.png */; };
 		F92B2FFC1FE9142C00ABE5D7 /* ASFileUtiles.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92B2FFB1FE9142C00ABE5D7 /* ASFileUtiles.swift */; };
 		F9E931391FEB4369008FBAC5 /* ASRowIndexView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E931381FEB4369008FBAC5 /* ASRowIndexView.swift */; };
+		F9E9313D1FECD3A8008FBAC5 /* hall_logo_view.png in Resources */ = {isa = PBXBuildFile; fileRef = F9E9313C1FECD3A7008FBAC5 /* hall_logo_view.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +49,7 @@
 		F92B2FF61FE9133700ABE5D7 /* seat_sold@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "seat_sold@2x.png"; sourceTree = "<group>"; };
 		F92B2FFB1FE9142C00ABE5D7 /* ASFileUtiles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ASFileUtiles.swift; sourceTree = "<group>"; };
 		F9E931381FEB4369008FBAC5 /* ASRowIndexView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ASRowIndexView.swift; sourceTree = "<group>"; };
+		F9E9313C1FECD3A7008FBAC5 /* hall_logo_view.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hall_logo_view.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,6 +122,7 @@
 		F92B2FF31FE912D000ABE5D7 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				F9E9313C1FECD3A7008FBAC5 /* hall_logo_view.png */,
 				F92B2FF41FE9133700ABE5D7 /* seat_available@2x.png */,
 				F92B2FF51FE9133700ABE5D7 /* seat_selected@2x.png */,
 				F92B2FF61FE9133700ABE5D7 /* seat_sold@2x.png */,
@@ -195,6 +198,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F92B2FF81FE9133700ABE5D7 /* seat_selected@2x.png in Resources */,
+				F9E9313D1FECD3A8008FBAC5 /* hall_logo_view.png in Resources */,
 				F92B2FF91FE9133700ABE5D7 /* seat_sold@2x.png in Resources */,
 				F92B2FDA1FE8DEAC00ABE5D7 /* LaunchScreen.storyboard in Resources */,
 				F92B2FD71FE8DEAC00ABE5D7 /* Assets.xcassets in Resources */,
