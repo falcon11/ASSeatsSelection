@@ -55,7 +55,7 @@ class ASHallLogoView: UIView {
         image.draw(at: CGPoint.zero)
         if hallName != nil {
             let attributes = [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 9),
-                              NSAttributedStringKey.foregroundColor: UIColor.black,
+                              NSAttributedStringKey.foregroundColor: UIColor.darkText,
                               ]
             let attributeString = NSAttributedString(string: hallName!, attributes: attributes)
             let strSize = attributeString.size()

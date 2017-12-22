@@ -35,7 +35,12 @@ class ASSeatsSelectionView: UIView, UIScrollViewDelegate, ASSeatsDelegate {
     var selectedImage = UIImage(named: "seat_selected")
     var hallLogoImage = UIImage(named: "hall_logo_view") {
         didSet {
-            
+            hallLogoView.image = hallLogoImage
+        }
+    }
+    var hallName = "银幕" {
+        didSet {
+            hallLogoView.hallName = hallName
         }
     }
     var zoomScale: CGFloat = 2.5 {

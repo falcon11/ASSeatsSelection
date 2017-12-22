@@ -36,6 +36,7 @@ class ViewController: UIViewController, ASSeatsSelectionViewDataSource, ASSeatsS
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        seatsView.hallName = "中瑞"
         seatsView.dataSource = self
         seatsView.delegate = self
     }
