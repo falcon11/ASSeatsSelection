@@ -50,12 +50,11 @@ class ASSeatsSelectionView: UIView, UIScrollViewDelegate, ASSeatsDelegate {
         var seatsScrollView = UIScrollView()
         seatsScrollView.delegate = self
         seatsScrollView.decelerationRate = UIScrollViewDecelerationRateFast
-        seatsScrollView.contentInset = UIEdgeInsets.zero
-        seatsScrollView.contentOffset = CGPoint.zero
         seatsScrollView.showsVerticalScrollIndicator = false
         seatsScrollView.showsHorizontalScrollIndicator = false
         seatsScrollView.minimumZoomScale = 1.0
         seatsScrollView.maximumZoomScale = 3
+        seatsScrollView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         seatsScrollView.frame = self.bounds
         self.addSubview(seatsScrollView)
         return seatsScrollView
@@ -162,17 +161,19 @@ class ASSeatsSelectionView: UIView, UIScrollViewDelegate, ASSeatsDelegate {
     /// - Parameters:
     ///   - scrollView:
     ///   - scale:
-    ///   - center: a CGPoint (relative to the bounds of the scroll view itself)
+    ///   - center: a CGPoint (relative to the view to zoom)
     /// - Returns:
     func zoomRectFor(scrollView: UIScrollView, scale: CGFloat, center: CGPoint) -> CGRect {
-        //Normalize current content size back to content scale of 1.0f
-        let contentSize = CGSize(width: (scrollView.contentSize.width / scrollView.zoomScale), height: (scrollView.contentSize.height / scrollView.zoomScale))
-
-        //translate the zoom point to relative to the content rect
-        let translatedZoomPoint = CGPoint(x: (center.x / scrollView.bounds.size.width) * contentSize.width, y: (center.y / scrollView.bounds.size.height) * contentSize.height)
-        
         var scale = CGFloat.minimum(scale, scrollView.maximumZoomScale)
         scale = CGFloat.maximum(scale, scrollView.minimumZoomScale)
+        // not perform well as expected
+        //Normalize current content size back to content scale of 1.0f
+//        let contentSize = CGSize(width: (scrollView.contentSize.width / scrollView.zoomScale), height: (scrollView.contentSize.height / scrollView.zoomScale))
+//
+//        //translate the zoom point to relative to the content rect
+//        let translatedZoomPoint = CGPoint(x: (center.x / scrollView.bounds.size.width) * contentSize.width, y: (center.y / scrollView.bounds.size.height) * contentSize.height)
+        
+        // not perform well as expected
 //        var translatedZoomPoint : CGPoint = .zero
 //        translatedZoomPoint.x = center.x + scrollView.contentOffset.x
 //        translatedZoomPoint.y = center.y + scrollView.contentOffset.y
@@ -181,7 +182,7 @@ class ASSeatsSelectionView: UIView, UIScrollViewDelegate, ASSeatsDelegate {
 //
 //        translatedZoomPoint.x *= zoomFactor
 //        translatedZoomPoint.y *= zoomFactor
-        
+        let translatedZoomPoint = center
         var zoomRect: CGRect = CGRect()
         zoomRect.size.width = scrollView.bounds.width / scale
         zoomRect.size.height = scrollView.bounds.height / scale
@@ -191,7 +192,8 @@ class ASSeatsSelectionView: UIView, UIScrollViewDelegate, ASSeatsDelegate {
     }
     
     func scrollViewDidZoom(_ scrollView: UIScrollView) {
-        seatsView.center = contentCenter(forBoundingSize: seatsScrollView.bounds.size, contentSize: seatsScrollView.contentSize)
+        // don't need to center the content now
+//        seatsView.center = contentCenter(forBoundingSize: seatsScrollView.bounds.size, contentSize: seatsScrollView.contentSize)
         updateRowIndexView()
         updateHallLogoView()
     }
@@ -211,12 +213,13 @@ class ASSeatsSelectionView: UIView, UIScrollViewDelegate, ASSeatsDelegate {
         return CGPoint(x: contentSize.width * 0.5 + horizontalOffset, y: contentSize.height * 0.5 + verticalOffset)
     }
     
+    
     // MARK: - ASSeatsDelegate
     
     func didSelectedSeatAt(row: Int, column: Int) {
         self.delegate?.seatsSelectionView?(self, didSelectAt: row, column: column)
         guard let seat = self.seatsView.seatFor(row: row, column: column) else { return }
-        let point = self.seatsScrollView.convert(seat.center, from: self.seatsView)
+        let point = seat.center//self.seatsScrollView.convert(seat.center, from: self.seatsView)
         if abs(self.seatsScrollView.maximumZoomScale - self.seatsScrollView.zoomScale) < 0.1 { return }
         let rect = self.zoomRectFor(scrollView: self.seatsScrollView, scale: self.seatsScrollView.maximumZoomScale, center: point)
         self.seatsScrollView.zoom(to: rect, animated: true)
