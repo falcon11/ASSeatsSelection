@@ -8,14 +8,82 @@
 
 import UIKit
 
-class ASCenterLineView: UIView {
+enum ASCenterLineDirection {
+    case Horizontal
+    case Vertical
+}
 
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
+class ASCenterLineView: UIView {
+    
+    var direction: ASCenterLineDirection = .Vertical {
+        didSet {
+            setNeedsDisplay()
+        }
     }
-    */
+    
+    var lineWidth: CGFloat {
+        get {
+            switch direction {
+            case .Vertical:
+                return self.width
+            default:
+                return self.height
+            }
+        }
+    }
+    
+    var width: CGFloat {
+        get {
+            return self.frame.width
+        }
+        set {
+            var frame = self.frame
+            frame.size.width = newValue
+            self.frame = frame
+            setNeedsDisplay()
+        }
+    }
+    var height: CGFloat {
+        get {
+            return self.frame.height
+        }
+        set {
+            var frame = self.frame
+            frame.size.height = newValue
+            self.frame = frame
+            setNeedsDisplay()
+        }
+    }
+    
+    var lineColor: UIColor = UIColor.orange {
+        didSet {
+            setNeedsDisplay()
+        }
+    }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        backgroundColor = UIColor.clear
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
+    override func draw(_ rect: CGRect) {
+        let lineWidth = self.lineWidth
+        let context = UIGraphicsGetCurrentContext()
+        context?.setLineWidth(lineWidth)
+        context?.setStrokeColor(lineColor.cgColor)
+        context?.setLineDash(phase: 0, lengths: [6, 2])
+        context?.move(to: CGPoint.zero)
+        switch direction {
+        case .Vertical:
+            context?.addLine(to: CGPoint(x: 0, y: bounds.height))
+        default:
+            context?.addLine(to: CGPoint(x: bounds.width, y: 0))
+        }
+        context?.strokePath()
+    }
 
 }

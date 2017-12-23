@@ -23,7 +23,7 @@ class ViewController: UIViewController, ASSeatsSelectionViewDataSource, ASSeatsS
         [1,2,3,4,5,1,2,3,1,2,3,],
         [1,2,3,4,5,1,2,3,1,2,3,1,2,3,],
         [1,2,3,4,5,1,2,3,1,2,3,],
-        [1,2,3,4,5,1,2,3,1,2,3,1,2,3,1,],
+        [1,2,3,4,5,1,2,3,1,2,3,1,2,3,1,4,5],
 //        [1,2,3,4,5,1,2],
 //        [1,2,3,4,5,1,2],
 //        [1,2,3,4,5,1,2],
@@ -84,7 +84,7 @@ class ViewController: UIViewController, ASSeatsSelectionViewDataSource, ASSeatsS
     
     func seatsSelectionView(seatsSelectionView: ASSeatsSelectionView, seatWidthIn row: Int, column: Int) -> CGFloat {
         if row % 4 == 3 && seats[row][column]%4 != 3 {
-            return 25
+            return 10
         }
         return 10
     }

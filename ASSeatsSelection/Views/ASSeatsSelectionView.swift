@@ -78,12 +78,23 @@ class ASSeatsSelectionView: UIView, UIScrollViewDelegate, ASSeatsDelegate {
     
     lazy var horizontalCenterLineview: ASCenterLineView = {
         var centerLineView = ASCenterLineView()
+        centerLineView.direction = .Horizontal
+        centerLineView.height = 1
+        seatsScrollView.insertSubview(centerLineView, belowSubview: seatsView)
+        return centerLineView
+    }()
+    
+    lazy var verticalCenterLineView: ASCenterLineView = {
+        var centerLineView = ASCenterLineView()
+        centerLineView.direction = .Vertical
+        centerLineView.width = 1
+        seatsScrollView.insertSubview(centerLineView, belowSubview: seatsView)
         return centerLineView
     }()
     
     lazy var seatsView: ASSeatsView = {
         var seatsView = ASSeatsView()
-        self.seatsScrollView.addSubview(seatsView)
+        self.seatsScrollView.insertSubview(seatsView, at: 0)
         return seatsView
     }()
     
@@ -99,12 +110,11 @@ class ASSeatsSelectionView: UIView, UIScrollViewDelegate, ASSeatsDelegate {
             seatsView.dataSource = self
             seatsView.frame = CGRect(x: 0, y: 0, width: seatsView.width, height: seatsView.height)
             let horizontalInset = (seatsScrollView.bounds.width-seatsView.width) / 2
-            print("horizontalInset \(horizontalInset)")
             seatsScrollView.contentInset = UIEdgeInsetsMake(60, horizontalInset, 60, horizontalInset)
             let rect = self.zoomRectFor(scrollView: self.seatsScrollView, scale: 2.5, center: seatsView.center)
             seatsScrollView.zoom(to: rect, animated: true)
             rowIndexView.dataSource = self
-            updateRowIndexView()
+            updateView()
         }
     }
     
@@ -128,6 +138,12 @@ class ASSeatsSelectionView: UIView, UIScrollViewDelegate, ASSeatsDelegate {
         
     }
     
+    func updateView() {
+        updateHallLogoView()
+        updateRowIndexView()
+        updateCenterLine()
+    }
+    
     func updateHallLogoView() -> Void {
         let hallLogoView = self.hallLogoView
         var frame = hallLogoView.frame
@@ -148,6 +164,13 @@ class ASSeatsSelectionView: UIView, UIScrollViewDelegate, ASSeatsDelegate {
         rowIndexView.center = center
     }
     
+    func updateCenterLine() {
+        verticalCenterLineView.height = seatsView.frame.height + 10
+        verticalCenterLineView.center = seatsView.center
+        horizontalCenterLineview.width = seatsView.frame.width + 10
+        horizontalCenterLineview.center = seatsView.center
+    }
+    
     /*
     // Only override draw() if you perform custom drawing.
     // An empty implementation adversely affects performance during animation.
@@ -162,8 +185,7 @@ class ASSeatsSelectionView: UIView, UIScrollViewDelegate, ASSeatsDelegate {
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        updateRowIndexView()
-        updateHallLogoView()
+        updateView()
     }
     
     
@@ -205,8 +227,7 @@ class ASSeatsSelectionView: UIView, UIScrollViewDelegate, ASSeatsDelegate {
     func scrollViewDidZoom(_ scrollView: UIScrollView) {
         // don't need to center the content now
 //        seatsView.center = contentCenter(forBoundingSize: seatsScrollView.bounds.size, contentSize: seatsScrollView.contentSize)
-        updateRowIndexView()
-        updateHallLogoView()
+        updateView()
     }
     
     func contentCenter(forBoundingSize boundingSize: CGSize, contentSize: CGSize) -> CGPoint {
