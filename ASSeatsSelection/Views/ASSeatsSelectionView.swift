@@ -72,7 +72,9 @@ class ASSeatsSelectionView: UIView, UIScrollViewDelegate, ASSeatsDelegate {
     }()
     
     lazy var indicatorView: ASSeatsIndicatorView = {
-        var indicatorView = ASSeatsIndicatorView()
+        var indicatorView = ASSeatsIndicatorView(frame: CGRect(x: 0, y: 0, width: 80, height: 64))
+        indicatorView.mapView = self.seatsView
+        self.addSubview(indicatorView)
         return indicatorView
     }()
     
@@ -142,6 +144,7 @@ class ASSeatsSelectionView: UIView, UIScrollViewDelegate, ASSeatsDelegate {
         updateHallLogoView()
         updateRowIndexView()
         updateCenterLine()
+        updateIndicatorView()
     }
     
     func updateHallLogoView() -> Void {
@@ -169,6 +172,17 @@ class ASSeatsSelectionView: UIView, UIScrollViewDelegate, ASSeatsDelegate {
         verticalCenterLineView.center = seatsView.center
         horizontalCenterLineview.width = seatsView.frame.width + 10
         horizontalCenterLineview.center = seatsView.center
+    }
+    
+    func updateIndicatorView() {
+        indicatorView.updateMapImageView()
+        var frame = CGRect()
+        let scale = seatsScrollView.zoomScale
+        frame.origin.x = max(seatsScrollView.contentOffset.x / scale, 0)
+        frame.origin.y = max(seatsScrollView.contentOffset.y / scale, 0)
+        frame.size.width = (seatsScrollView.contentSize.width - abs(seatsScrollView.contentOffset.x))/scale
+        frame.size.height = (seatsScrollView.contentSize.height - abs(seatsScrollView.contentOffset.y)) / scale
+        indicatorView.updateIndicatorWithFrame(frame: frame)
     }
     
     /*
@@ -227,7 +241,7 @@ class ASSeatsSelectionView: UIView, UIScrollViewDelegate, ASSeatsDelegate {
     func scrollViewDidZoom(_ scrollView: UIScrollView) {
         // don't need to center the content now
 //        seatsView.center = contentCenter(forBoundingSize: seatsScrollView.bounds.size, contentSize: seatsScrollView.contentSize)
-        updateView()
+//        updateView()
     }
     
     func contentCenter(forBoundingSize boundingSize: CGSize, contentSize: CGSize) -> CGPoint {
@@ -245,6 +259,10 @@ class ASSeatsSelectionView: UIView, UIScrollViewDelegate, ASSeatsDelegate {
         return CGPoint(x: contentSize.width * 0.5 + horizontalOffset, y: contentSize.height * 0.5 + verticalOffset)
     }
     
+    func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
+        updateView()
+    }
+    
     
     // MARK: - ASSeatsDelegate
     
@@ -256,6 +274,10 @@ class ASSeatsSelectionView: UIView, UIScrollViewDelegate, ASSeatsDelegate {
         let rect = self.zoomRectFor(scrollView: self.seatsScrollView, scale: self.seatsScrollView.maximumZoomScale, center: point)
         self.seatsScrollView.zoom(to: rect, animated: true)
         self.seatsView.layoutIfNeeded()
+    }
+    
+    func didUpdated(seatsView: ASSeatsView) {
+        self.updateIndicatorView()
     }
 
 }

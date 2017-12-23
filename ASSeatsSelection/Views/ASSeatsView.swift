@@ -26,7 +26,8 @@ import UIKit
 }
 
 @objc protocol ASSeatsDelegate: NSObjectProtocol {
-    func didSelectedSeatAt(row: Int, column: Int);
+    func didSelectedSeatAt(row: Int, column: Int)
+    @objc optional func didUpdated(seatsView: ASSeatsView)
 }
 
 class ASSeatsView: UIView {
@@ -90,12 +91,14 @@ class ASSeatsView: UIView {
             }
             width = width < x ? x : width
         }
+        delegate?.didUpdated?(seatsView: self)
     }
     
     func reload(seatButton: ASSeatButton) {
         dataSource?.seatImageFor?(seatButton.row!, column: seatButton.column!, completion: { (image) in
             DispatchQueue.main.async {
                 seatButton.setImage(image, for: .normal)
+                self.delegate?.didUpdated?(seatsView: self)
             }
         })
     }
