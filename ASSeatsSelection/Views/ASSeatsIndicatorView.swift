@@ -30,7 +30,7 @@ class ASSeatsIndicatorView: UIView {
             frame.size.width = view.frame.width * radio
             frame.size.height = bounds.height
             view.frame = frame
-            addSubview(view)
+            insertSubview(view, belowSubview: indicatorView)
         }
     }
     
@@ -63,7 +63,6 @@ class ASSeatsIndicatorView: UIView {
         frame.size.width = frame.width * radio
         frame.size.height = frame.height * radio
         indicatorView.frame = frame
-        self.addSubview(indicatorView)
     }
     
     /*

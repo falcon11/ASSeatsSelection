@@ -175,13 +175,18 @@ class ASSeatsSelectionView: UIView, UIScrollViewDelegate, ASSeatsDelegate {
     }
     
     func updateIndicatorView() {
-        indicatorView.updateMapImageView()
         var frame = CGRect()
         let scale = seatsScrollView.zoomScale
-        frame.origin.x = max(seatsScrollView.contentOffset.x / scale, 0)
-        frame.origin.y = max(seatsScrollView.contentOffset.y / scale, 0)
-        frame.size.width = (seatsScrollView.contentSize.width - abs(seatsScrollView.contentOffset.x))/scale
-        frame.size.height = (seatsScrollView.contentSize.height - abs(seatsScrollView.contentOffset.y)) / scale
+        if seatsScrollView.contentSize.width < seatsScrollView.frame.width && seatsScrollView.contentSize.height < seatsScrollView.frame.height {
+            frame.origin = CGPoint.zero
+            //seatsView.frame will change while zooming, but seatsView.bounds will not change
+            frame.size = seatsView.bounds.size
+        } else {
+            frame.origin.x = max(seatsScrollView.contentOffset.x / scale, 0)
+            frame.origin.y = max(seatsScrollView.contentOffset.y / scale, 0)
+            frame.size.width = (seatsScrollView.contentSize.width - abs(seatsScrollView.contentOffset.x))/scale
+            frame.size.height = (seatsScrollView.contentSize.height - abs(seatsScrollView.contentOffset.y)) / scale
+        }
         indicatorView.updateIndicatorWithFrame(frame: frame)
     }
     
@@ -277,7 +282,7 @@ class ASSeatsSelectionView: UIView, UIScrollViewDelegate, ASSeatsDelegate {
     }
     
     func didUpdated(seatsView: ASSeatsView) {
-        self.updateIndicatorView()
+        indicatorView.updateMapImageView()
     }
 
 }
