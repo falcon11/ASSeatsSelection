@@ -119,6 +119,11 @@ class ASSeatsView: UIView {
         }
         return nil
     }
+    
+    func reloadSeatAt(row: Int, column: Int) {
+        guard let seat = seatFor(row: row, column: column) else { return }
+        reload(seatButton: seat)
+    }
 
 }
 

@@ -148,6 +148,10 @@ class ASSeatsSelectionView: UIView, UIScrollViewDelegate, ASSeatsDelegate {
         seatsScrollView.zoom(to: rect, animated: true)
     }
     
+    func reloadSeatAt(row: Int, column: Int) {
+        seatsView.reloadSeatAt(row: row, column: column)
+    }
+    
     func updateView() {
         updateHallLogoView()
         updateRowIndexView()

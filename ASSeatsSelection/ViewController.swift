@@ -36,10 +36,18 @@ class ViewController: UIViewController, ASSeatsSelectionViewDataSource, ASSeatsS
         ]
     
     var seats: Array<Array<Int>>!
+    var selectedSeats: Array<IndexPath> = [] {
+        didSet {
+            print("selected seats change")
+            updateSelectedStackView()
+        }
+    }
+    var maxSelected: Int = 4
+    @IBOutlet weak var selectedSeatsStackView: UIView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        seats = a
+        seats = b
         // Do any additional setup after loading the view, typically from a nib.
         seatsView.hallName = "大银幕"
         seatsView.dataSource = self
@@ -52,14 +60,54 @@ class ViewController: UIViewController, ASSeatsSelectionViewDataSource, ASSeatsS
         // Dispose of any resources that can be recreated.
     }
     
+    func updateSelectedStackView() -> Void {
+        let subViews = selectedSeatsStackView.subviews
+        for view in subViews {
+            let index = view.tag
+            if type(of: view) == UIButton.self && (index < selectedSeats.count)  {
+                let button = view as! UIButton
+                let indexPath = selectedSeats[index]
+                button.setTitle("(\(indexPath.row), \(indexPath.section)) x", for: .normal)
+            } else if type(of: view) == UIButton.self {
+                let button = view as! UIButton
+                button.setTitle("\((index + 1))", for: .normal)
+            }
+        }
+        selectedSeatsStackView.sizeToFit()
+        selectedSeatsStackView.layoutIfNeeded()
+    }
+    
+    @IBAction func changeAction(_ sender: UIButton) {
+        seats = arc4random() % 2 == 1 ? a : b
+        selectedSeats.removeAll()
+        seatsView.reloadSeatsSelectionView()
+    }
+    
+    @IBAction func selectedSeatsButtonAction(_ sender: UIButton) {
+        if (sender.tag + 1) > selectedSeats.count { return }
+        let indexPath = selectedSeats[sender.tag]
+        seats[indexPath.row][indexPath.section] = 2
+        seatsView.reloadSeatAt(row: indexPath.row, column: indexPath.section)
+        selectedSeats.remove(at: sender.tag)
+    }
+    
     // MARK: - ASSeatsSelectionViewDelegate
     
     func seatsSelectionView(_ seatsSelectionView: ASSeatsSelectionView, didSelectAt row: Int, column: Int) {
+        let indexPath = IndexPath(row: row, section: column)
+        // %4 == 2 available
         if seats[row][column] % 4 == 2 {
+            // set to selected
             seats[row][column] = 0
+            selectedSeats.append(indexPath)
         } else if seats[row][column] % 4 == 0 {
+            // %4 == 0 selected, set to available
             seats[row][column] = 2
+            if let index = selectedSeats.index(of: indexPath) {
+                selectedSeats.remove(at: index)
+            }
         }
+        print("selected seats: \(selectedSeats)")
     }
     
     // MARK: - ASSeatsSelectionViewDataSource
@@ -77,11 +125,11 @@ class ViewController: UIViewController, ASSeatsSelectionViewDataSource, ASSeatsS
         var image: UIImage? = nil
         switch number%4 {
         case 0:
-            image = #imageLiteral(resourceName: "seat_selected.png")
+            image = UIImage(named: "seat_selected")
         case 1:
-            image = #imageLiteral(resourceName: "seat_sold.png")
+            image = UIImage(named: "seat_sold")
         case 2:
-            image = #imageLiteral(resourceName: "seat_available.png")
+            image = UIImage(named: "seat_available")
         default:
             break
         }
@@ -99,10 +147,6 @@ class ViewController: UIViewController, ASSeatsSelectionViewDataSource, ASSeatsS
         let seats = self.seats[row]
         return "\((seats.count>0 ? "\(row)" : ""))"
     }
-
-    @IBAction func changeAction(_ sender: UIButton) {
-        seats = arc4random() % 2 == 1 ? a : b
-        seatsView.reloadSeatsSelectionView()
-    }
+    
 }
 

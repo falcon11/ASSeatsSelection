@@ -18,26 +18,90 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WCQ-QX-V3T" customClass="ASSeatsSelectionView" customModule="ASSeatsSelection" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="128" width="375" height="348"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WCQ-QX-V3T" customClass="ASSeatsSelectionView" customModule="ASSeatsSelection" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="94" width="375" height="348"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="348" id="FLg-8P-GKy"/>
+                                </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2iD-0u-d9D">
-                                <rect key="frame" x="164" y="526" width="46" height="30"/>
+                                <rect key="frame" x="157" y="541" width="59" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="change"/>
                                 <connections>
                                     <action selector="changeAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="uzN-BF-0ue"/>
                                 </connections>
                             </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="coP-E1-sEx">
+                                <rect key="frame" x="16" y="457" width="343" height="44"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nIa-DB-GB3">
+                                        <rect key="frame" x="0.0" y="0.0" width="86" height="44"/>
+                                        <state key="normal" title="1"/>
+                                        <connections>
+                                            <action selector="selectedSeatsButtonAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="7ij-4j-8Jg"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hNO-Vw-lxB">
+                                        <rect key="frame" x="86" y="0.0" width="85.5" height="44"/>
+                                        <state key="normal" title="2"/>
+                                        <connections>
+                                            <action selector="selectedSeatsButtonAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="IBb-iX-8SY"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DDN-CE-tt2">
+                                        <rect key="frame" x="171.5" y="0.0" width="86" height="44"/>
+                                        <state key="normal" title="3"/>
+                                        <connections>
+                                            <action selector="selectedSeatsButtonAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="2N4-KA-8aO"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yxW-MS-Z4Z">
+                                        <rect key="frame" x="257.5" y="0.0" width="85.5" height="44"/>
+                                        <state key="normal" title="4"/>
+                                        <connections>
+                                            <action selector="selectedSeatsButtonAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ndf-ko-68T"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="nIa-DB-GB3" firstAttribute="leading" secondItem="coP-E1-sEx" secondAttribute="leading" id="0GK-R2-MQT"/>
+                                    <constraint firstItem="hNO-Vw-lxB" firstAttribute="top" secondItem="nIa-DB-GB3" secondAttribute="top" id="4L4-7N-oVG"/>
+                                    <constraint firstAttribute="height" constant="44" id="5pI-DR-psW"/>
+                                    <constraint firstItem="DDN-CE-tt2" firstAttribute="bottom" secondItem="nIa-DB-GB3" secondAttribute="bottom" id="9lg-he-wLh"/>
+                                    <constraint firstItem="yxW-MS-Z4Z" firstAttribute="top" secondItem="nIa-DB-GB3" secondAttribute="top" id="AgH-jG-wIf"/>
+                                    <constraint firstItem="yxW-MS-Z4Z" firstAttribute="bottom" secondItem="nIa-DB-GB3" secondAttribute="bottom" id="Ff2-O0-zx7"/>
+                                    <constraint firstItem="yxW-MS-Z4Z" firstAttribute="leading" secondItem="DDN-CE-tt2" secondAttribute="trailing" id="FlV-wj-zST"/>
+                                    <constraint firstItem="DDN-CE-tt2" firstAttribute="width" secondItem="nIa-DB-GB3" secondAttribute="width" id="N0u-oT-uX9"/>
+                                    <constraint firstItem="hNO-Vw-lxB" firstAttribute="leading" secondItem="nIa-DB-GB3" secondAttribute="trailing" id="Omj-f9-xcd"/>
+                                    <constraint firstItem="DDN-CE-tt2" firstAttribute="leading" secondItem="hNO-Vw-lxB" secondAttribute="trailing" id="RNA-AG-2EQ"/>
+                                    <constraint firstItem="hNO-Vw-lxB" firstAttribute="bottom" secondItem="nIa-DB-GB3" secondAttribute="bottom" id="SF5-FV-9XI"/>
+                                    <constraint firstItem="DDN-CE-tt2" firstAttribute="top" secondItem="nIa-DB-GB3" secondAttribute="top" id="TD7-Db-o1G"/>
+                                    <constraint firstAttribute="trailing" secondItem="yxW-MS-Z4Z" secondAttribute="trailing" id="TIz-Wp-xRx"/>
+                                    <constraint firstItem="nIa-DB-GB3" firstAttribute="top" secondItem="coP-E1-sEx" secondAttribute="top" id="Xdi-pX-NLu"/>
+                                    <constraint firstItem="yxW-MS-Z4Z" firstAttribute="width" secondItem="nIa-DB-GB3" secondAttribute="width" id="lqu-VV-bLg"/>
+                                    <constraint firstItem="hNO-Vw-lxB" firstAttribute="width" secondItem="nIa-DB-GB3" secondAttribute="width" id="qj6-wv-Cw5"/>
+                                    <constraint firstAttribute="bottom" secondItem="nIa-DB-GB3" secondAttribute="bottom" id="xnC-Jr-Pog"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="WCQ-QX-V3T" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="2WX-ea-yZx"/>
+                            <constraint firstItem="coP-E1-sEx" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="MaV-HS-Oqw"/>
+                            <constraint firstItem="WCQ-QX-V3T" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="OKL-e8-RIm"/>
+                            <constraint firstItem="coP-E1-sEx" firstAttribute="top" secondItem="WCQ-QX-V3T" secondAttribute="bottom" constant="15" id="dWs-Fn-hnq"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="coP-E1-sEx" secondAttribute="trailing" constant="16" id="f6u-3e-EBM"/>
+                            <constraint firstItem="WCQ-QX-V3T" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="30" id="ta1-g7-laf"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <navigationItem key="navigationItem" id="3Zt-yc-dgz"/>
                     <connections>
                         <outlet property="seatsView" destination="WCQ-QX-V3T" id="sPC-jQ-ehj"/>
+                        <outlet property="selectedSeatsStackView" destination="coP-E1-sEx" id="SRc-i0-0ST"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
