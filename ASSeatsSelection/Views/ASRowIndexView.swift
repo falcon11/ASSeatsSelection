@@ -29,6 +29,12 @@ class ASRowIndexView: UIView {
             return rows
         }
     }
+    
+    var indexTextColor: UIColor = UIColor.white {
+        didSet {
+            setNeedsDisplay()
+        }
+    }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -72,8 +78,8 @@ class ASRowIndexView: UIView {
         let rows = self.rows
         if rows <= 0 { return }
         let attributes = [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 10),
-                             NSAttributedStringKey.foregroundColor: UIColor.white,
-                            ]
+                             NSAttributedStringKey.foregroundColor: indexTextColor,
+                             ] as [NSAttributedStringKey : Any]
         let rowHeight: CGFloat = contentHeight / CGFloat(rows)
         var y = headerAndFooterHight
         for i in 1...rows {

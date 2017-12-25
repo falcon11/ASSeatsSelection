@@ -54,6 +54,8 @@ class ViewController: UIViewController, ASSeatsSelectionViewDataSource, ASSeatsS
         seatsView.hallNameColor = UIColor.green
         seatsView.indicatorColor = UIColor.orange
         seatsView.indicatorViewHeight = 64
+        seatsView.rowIndexViewTextColor = UIColor.orange
+        seatsView.rowIndexViewBackgroundColor = UIColor.gray.withAlphaComponent(0.5)
         seatsView.dataSource = self
         seatsView.delegate = self
     }

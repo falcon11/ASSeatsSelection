@@ -85,6 +85,18 @@ class ASSeatsSelectionView: UIView, UIScrollViewDelegate, ASSeatsDelegate {
         }
     }
     
+    var rowIndexViewBackgroundColor: UIColor = UIColor.gray.withAlphaComponent(0.5) {
+        didSet {
+            self.rowIndexView.backgroundColor = rowIndexViewBackgroundColor
+        }
+    }
+    
+    var rowIndexViewTextColor: UIColor = UIColor.white {
+        didSet {
+            self.rowIndexView.indexTextColor = rowIndexViewTextColor
+        }
+    }
+    
     private lazy var hallLogoView: ASHallLogoView = {
         var hallLogoView = ASHallLogoView(frame: CGRect(x: 0, y: 0, width: 200, height: 20))
         hallLogoView.hallName = "银幕"
@@ -140,6 +152,8 @@ class ASSeatsSelectionView: UIView, UIScrollViewDelegate, ASSeatsDelegate {
     private lazy var rowIndexView: ASRowIndexView = {
         var rowIndexView = ASRowIndexView(frame: CGRect(x: 0, y: -10, width: 13, height: bounds.height))
         rowIndexView.headerAndFooterHight = 10
+        rowIndexView.backgroundColor = rowIndexViewBackgroundColor
+        rowIndexView.indexTextColor = rowIndexViewTextColor
         seatsScrollView.addSubview(rowIndexView)
         return rowIndexView
     }()
