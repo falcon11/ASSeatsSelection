@@ -36,7 +36,7 @@ class ViewController: UIViewController, ASSeatsSelectionViewDataSource, ASSeatsS
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        seatsView.hallName = "中瑞"
+        seatsView.hallName = "大银幕"
         seatsView.dataSource = self
         seatsView.delegate = self
     }
@@ -84,7 +84,7 @@ class ViewController: UIViewController, ASSeatsSelectionViewDataSource, ASSeatsS
     
     func seatsSelectionView(seatsSelectionView: ASSeatsSelectionView, seatWidthIn row: Int, column: Int) -> CGFloat {
         if row % 4 == 3 && seats[row][column]%4 != 3 {
-            return 10
+            return 20
         }
         return 10
     }

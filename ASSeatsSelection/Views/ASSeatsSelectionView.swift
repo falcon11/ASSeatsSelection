@@ -175,6 +175,8 @@ class ASSeatsSelectionView: UIView, UIScrollViewDelegate, ASSeatsDelegate {
     }
     
     func updateIndicatorView() {
+        indicatorView.alpha = 1
+        indicatorView.isHidden = false
         var frame = CGRect()
         let scale = seatsScrollView.zoomScale
         if seatsScrollView.contentSize.width < seatsScrollView.frame.width && seatsScrollView.contentSize.height < seatsScrollView.frame.height {
@@ -188,6 +190,14 @@ class ASSeatsSelectionView: UIView, UIScrollViewDelegate, ASSeatsDelegate {
             frame.size.height = (seatsScrollView.contentSize.height - abs(seatsScrollView.contentOffset.y)) / scale
         }
         indicatorView.updateIndicatorWithFrame(frame: frame)
+    }
+    
+    @objc func hiddenIndicator() {
+        UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseInOut, animations: { [unowned self] in
+            self.indicatorView.alpha = 0.5
+        }) { [unowned self] (finished) in
+            self.indicatorView.isHidden = true
+        }
     }
     
     /*
@@ -205,6 +215,20 @@ class ASSeatsSelectionView: UIView, UIScrollViewDelegate, ASSeatsDelegate {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         updateView()
+    }
+    
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        type(of: self).cancelPreviousPerformRequests(withTarget: self, selector: #selector(hiddenIndicator), object: nil)
+    }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        self.perform(#selector(hiddenIndicator), with: nil, afterDelay: 2)
+    }
+    
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if !decelerate {
+            scrollViewDidEndDecelerating(scrollView)
+        }
     }
     
     
@@ -247,6 +271,7 @@ class ASSeatsSelectionView: UIView, UIScrollViewDelegate, ASSeatsDelegate {
         // don't need to center the content now
 //        seatsView.center = contentCenter(forBoundingSize: seatsScrollView.bounds.size, contentSize: seatsScrollView.contentSize)
 //        updateView()
+        type(of: self).cancelPreviousPerformRequests(withTarget: self, selector: #selector(hiddenIndicator), object: nil)
     }
     
     func contentCenter(forBoundingSize boundingSize: CGSize, contentSize: CGSize) -> CGPoint {
@@ -266,6 +291,7 @@ class ASSeatsSelectionView: UIView, UIScrollViewDelegate, ASSeatsDelegate {
     
     func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
         updateView()
+        scrollViewDidEndDecelerating(scrollView)
     }
     
     
