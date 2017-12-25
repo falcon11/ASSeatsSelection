@@ -9,6 +9,12 @@
 import UIKit
 
 class ASSeatsIndicatorView: UIView {
+    
+    var indicatorColor: UIColor = UIColor.red {
+        didSet {
+            indicatorView.layer.borderColor = indicatorColor.cgColor
+        }
+    }
 
     weak var mapView: UIView? {
         didSet {
@@ -47,7 +53,7 @@ class ASSeatsIndicatorView: UIView {
     lazy var indicatorView: UIView = {
         var indicatorView = UIView()
         indicatorView.backgroundColor = UIColor.clear
-        indicatorView.layer.borderColor = UIColor.red.cgColor
+        indicatorView.layer.borderColor = indicatorColor.cgColor
         indicatorView.layer.borderWidth = 1.0
         self.addSubview(indicatorView)
         return indicatorView

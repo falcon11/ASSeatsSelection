@@ -50,9 +50,12 @@ class ViewController: UIViewController, ASSeatsSelectionViewDataSource, ASSeatsS
         seats = b
         // Do any additional setup after loading the view, typically from a nib.
         seatsView.hallName = "大银幕"
+        seatsView.hallLogoSize = CGSize(width: 200, height: 20)
+        seatsView.hallNameColor = UIColor.green
+        seatsView.indicatorColor = UIColor.orange
+        seatsView.indicatorViewHeight = 64
         seatsView.dataSource = self
         seatsView.delegate = self
-        seatsView.indicatorViewHeight = 64
     }
 
     override func didReceiveMemoryWarning() {

@@ -23,6 +23,12 @@ class ASHallLogoView: UIView {
         }
     }
     
+    var hallNameColor: UIColor = UIColor.darkText {
+        didSet {
+            setNeedsDisplay()
+        }
+    }
+    
     private lazy var logoImageView: UIImageView = {
         let imageView = UIImageView(frame: bounds)
         imageView.backgroundColor = UIColor.clear
@@ -55,8 +61,8 @@ class ASHallLogoView: UIView {
         image.draw(at: CGPoint.zero)
         if hallName != nil {
             let attributes = [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 9),
-                              NSAttributedStringKey.foregroundColor: UIColor.darkText,
-                              ]
+                              NSAttributedStringKey.foregroundColor: self.hallNameColor,
+                              ] as [NSAttributedStringKey : Any]
             let attributeString = NSAttributedString(string: hallName!, attributes: attributes)
             let strSize = attributeString.size()
             attributeString.draw(at: CGPoint(x: (size.width - strSize.width)/2, y: (size.height - strSize.height)/2))

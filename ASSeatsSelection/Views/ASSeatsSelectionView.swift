@@ -40,6 +40,27 @@ class ASSeatsSelectionView: UIView, UIScrollViewDelegate, ASSeatsDelegate {
             hallLogoView.hallName = hallName
         }
     }
+    
+    var hallLogoSize: CGSize = CGSize(width: 200, height: 20) {
+        didSet {
+            var frame = hallLogoView.frame
+            frame.size = hallLogoSize
+            hallLogoView.frame = frame
+        }
+    }
+    
+    var hallNameColor: UIColor = UIColor.red {
+        didSet {
+            hallLogoView.hallNameColor = hallNameColor
+        }
+    }
+    
+    var isHallLogoViewHidden: Bool = false {
+        didSet {
+            hallLogoView.isHidden = isHallLogoViewHidden
+        }
+    }
+    
     var zoomScale: CGFloat = 2.5 {
         didSet {
             self.seatsScrollView.setZoomScale(zoomScale, animated: true)
@@ -48,9 +69,19 @@ class ASSeatsSelectionView: UIView, UIScrollViewDelegate, ASSeatsDelegate {
     
     var indicatorViewHeight: CGFloat = 64 {
         didSet {
+            // seatsView dependends on dataSource, indicatorView dependends on seatsView
+            if self.dataSource == nil { return }
             var frame = indicatorView.frame
             frame.size.height = indicatorViewHeight
             indicatorView.frame = frame
+        }
+    }
+    
+    var indicatorColor: UIColor = UIColor.red {
+        didSet {
+            if self.dataSource != nil {
+                indicatorView.indicatorColor = indicatorColor
+            }
         }
     }
     
@@ -79,6 +110,7 @@ class ASSeatsSelectionView: UIView, UIScrollViewDelegate, ASSeatsDelegate {
     private lazy var indicatorView: ASSeatsIndicatorView = {
         var indicatorView = ASSeatsIndicatorView(frame: CGRect(x: 0, y: 0, width: 80, height: indicatorViewHeight))
         indicatorView.mapView = self.seatsView
+        indicatorView.indicatorColor = self.indicatorColor
         self.addSubview(indicatorView)
         return indicatorView
     }()
