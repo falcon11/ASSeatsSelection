@@ -31,6 +31,7 @@ class ASSeatsIndicatorView: UIView {
             frame.size.height = bounds.height
             view.frame = frame
             insertSubview(view, belowSubview: indicatorView)
+            mapImageView?.autoresizingMask = [.flexibleHeight, .flexibleWidth]
         }
     }
     

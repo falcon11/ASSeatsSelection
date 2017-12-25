@@ -11,7 +11,16 @@ import UIKit
 class ViewController: UIViewController, ASSeatsSelectionViewDataSource, ASSeatsSelectionViewDelegate {
     
     @IBOutlet weak var seatsView: ASSeatsSelectionView!
-    var seats = [
+    let a = [
+        [1,2,3,4,5,1,2],
+        [1,2,3,4,5,1,2],
+        [1,2,3,4,5,1,2],
+        [1,2,3,4,5,1,2],
+        [1,2,3,4,5,1,2],
+        [1,2,3,4,5,1,2],
+        [1,2,3,4,5,1,2],
+        ]
+    let b = [
         [1,2,3,4,5,1,2,3,1,2,3,1,2,3,],
         [1,2,3,4,5,1,2,3,1,2,3,1,2,3,],
         [3,],
@@ -24,21 +33,18 @@ class ViewController: UIViewController, ASSeatsSelectionViewDataSource, ASSeatsS
         [1,2,3,4,5,1,2,3,1,2,3,1,2,3,],
         [1,2,3,4,5,1,2,3,1,2,3,],
         [1,2,3,4,5,1,2,3,1,2,3,1,2,3,1,4,5],
-//        [1,2,3,4,5,1,2],
-//        [1,2,3,4,5,1,2],
-//        [1,2,3,4,5,1,2],
-//        [1,2,3,4,5,1,2],
-//        [1,2,3,4,5,1,2],
-//        [1,2,3,4,5,1,2],
-//        [1,2,3,4,5,1,2],
-    ]
+        ]
+    
+    var seats: Array<Array<Int>>!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        seats = a
         // Do any additional setup after loading the view, typically from a nib.
         seatsView.hallName = "大银幕"
         seatsView.dataSource = self
         seatsView.delegate = self
+        seatsView.indicatorViewHeight = 64
     }
 
     override func didReceiveMemoryWarning() {
@@ -94,5 +100,9 @@ class ViewController: UIViewController, ASSeatsSelectionViewDataSource, ASSeatsS
         return "\((seats.count>0 ? "\(row)" : ""))"
     }
 
+    @IBAction func changeAction(_ sender: UIButton) {
+        seats = arc4random() % 2 == 1 ? a : b
+        seatsView.reloadSeatsSelectionView()
+    }
 }
 

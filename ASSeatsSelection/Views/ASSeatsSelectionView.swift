@@ -30,9 +30,6 @@ import UIKit
 
 class ASSeatsSelectionView: UIView, UIScrollViewDelegate, ASSeatsDelegate {
     
-    var soldImage = UIImage(named: "seat_sold")
-    var availableImage = UIImage(named: "seat_available")
-    var selectedImage = UIImage(named: "seat_selected")
     var hallLogoImage = UIImage(named: "hall_logo_view") {
         didSet {
             hallLogoView.image = hallLogoImage
@@ -49,7 +46,15 @@ class ASSeatsSelectionView: UIView, UIScrollViewDelegate, ASSeatsDelegate {
         }
     }
     
-    lazy var hallLogoView: ASHallLogoView = {
+    var indicatorViewHeight: CGFloat = 64 {
+        didSet {
+            var frame = indicatorView.frame
+            frame.size.height = indicatorViewHeight
+            indicatorView.frame = frame
+        }
+    }
+    
+    private lazy var hallLogoView: ASHallLogoView = {
         var hallLogoView = ASHallLogoView(frame: CGRect(x: 0, y: 0, width: 200, height: 20))
         hallLogoView.hallName = "银幕"
         hallLogoView.image = hallLogoImage
@@ -57,7 +62,7 @@ class ASSeatsSelectionView: UIView, UIScrollViewDelegate, ASSeatsDelegate {
         return hallLogoView
     }()
     
-    lazy var seatsScrollView: UIScrollView = {
+    private lazy var seatsScrollView: UIScrollView = {
         var seatsScrollView = UIScrollView()
         seatsScrollView.delegate = self
         seatsScrollView.decelerationRate = UIScrollViewDecelerationRateFast
@@ -71,14 +76,14 @@ class ASSeatsSelectionView: UIView, UIScrollViewDelegate, ASSeatsDelegate {
         return seatsScrollView
     }()
     
-    lazy var indicatorView: ASSeatsIndicatorView = {
-        var indicatorView = ASSeatsIndicatorView(frame: CGRect(x: 0, y: 0, width: 80, height: 64))
+    private lazy var indicatorView: ASSeatsIndicatorView = {
+        var indicatorView = ASSeatsIndicatorView(frame: CGRect(x: 0, y: 0, width: 80, height: indicatorViewHeight))
         indicatorView.mapView = self.seatsView
         self.addSubview(indicatorView)
         return indicatorView
     }()
     
-    lazy var horizontalCenterLineview: ASCenterLineView = {
+    private lazy var horizontalCenterLineview: ASCenterLineView = {
         var centerLineView = ASCenterLineView()
         centerLineView.direction = .Horizontal
         centerLineView.height = 1
@@ -86,7 +91,7 @@ class ASSeatsSelectionView: UIView, UIScrollViewDelegate, ASSeatsDelegate {
         return centerLineView
     }()
     
-    lazy var verticalCenterLineView: ASCenterLineView = {
+    private lazy var verticalCenterLineView: ASCenterLineView = {
         var centerLineView = ASCenterLineView()
         centerLineView.direction = .Vertical
         centerLineView.width = 1
@@ -94,13 +99,13 @@ class ASSeatsSelectionView: UIView, UIScrollViewDelegate, ASSeatsDelegate {
         return centerLineView
     }()
     
-    lazy var seatsView: ASSeatsView = {
+    private lazy var seatsView: ASSeatsView = {
         var seatsView = ASSeatsView()
         self.seatsScrollView.insertSubview(seatsView, at: 0)
         return seatsView
     }()
     
-    lazy var rowIndexView: ASRowIndexView = {
+    private lazy var rowIndexView: ASRowIndexView = {
         var rowIndexView = ASRowIndexView(frame: CGRect(x: 0, y: -10, width: 13, height: bounds.height))
         rowIndexView.headerAndFooterHight = 10
         seatsScrollView.addSubview(rowIndexView)
@@ -110,13 +115,12 @@ class ASSeatsSelectionView: UIView, UIScrollViewDelegate, ASSeatsDelegate {
     var dataSource: ASSeatsSelectionViewDataSource? {
         didSet {
             seatsView.dataSource = self
+            rowIndexView.dataSource = self
             seatsView.frame = CGRect(x: 0, y: 0, width: seatsView.width, height: seatsView.height)
             let horizontalInset = (seatsScrollView.bounds.width-seatsView.width) / 2
-            seatsScrollView.contentInset = UIEdgeInsetsMake(60, horizontalInset, 60, horizontalInset)
+            seatsScrollView.contentInset = UIEdgeInsetsMake(indicatorViewHeight, horizontalInset, 60, horizontalInset)
             let rect = self.zoomRectFor(scrollView: self.seatsScrollView, scale: 2.5, center: seatsView.center)
             seatsScrollView.zoom(to: rect, animated: true)
-            rowIndexView.dataSource = self
-            updateView()
         }
     }
     
@@ -128,16 +132,20 @@ class ASSeatsSelectionView: UIView, UIScrollViewDelegate, ASSeatsDelegate {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupViews()
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        setupViews()
     }
     
-    func setupViews() -> Void {
-        
+    func reloadSeatsSelectionView() {
+        self.seatsScrollView.zoomScale = 1
+        self.seatsView.reloadSeatsView()
+        self.seatsView.frame = CGRect(x: 0, y: 0, width: self.seatsView.width, height: self.seatsView.height)
+        //should set seatsScrollView.contentSize to seatsView.bounds.size
+        self.seatsScrollView.contentSize = self.seatsView.bounds.size
+        let rect = self.zoomRectFor(scrollView: self.seatsScrollView, scale: 2.5, center: seatsView.center)
+        seatsScrollView.zoom(to: rect, animated: true)
     }
     
     func updateView() {
@@ -276,7 +284,6 @@ class ASSeatsSelectionView: UIView, UIScrollViewDelegate, ASSeatsDelegate {
     func scrollViewDidZoom(_ scrollView: UIScrollView) {
         // don't need to center the content now
 //        seatsView.center = contentCenter(forBoundingSize: seatsScrollView.bounds.size, contentSize: seatsScrollView.contentSize)
-//        updateView()
         type(of: self).cancelPreviousPerformRequests(withTarget: self, selector: #selector(hiddenIndicator), object: nil)
     }
     

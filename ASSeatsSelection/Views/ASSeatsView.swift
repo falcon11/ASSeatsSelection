@@ -70,6 +70,7 @@ class ASSeatsView: UIView {
         let rows: Int = self.rows
         if rows == 0 { return }
         let seatHeight: CGFloat = self.seatHeight
+        var width: CGFloat = 0
         for row in 0...(rows-1) {
             var x: CGFloat = 0.0
             let y: CGFloat = seatHeight * CGFloat(row)
@@ -91,6 +92,8 @@ class ASSeatsView: UIView {
             }
             width = width < x ? x : width
         }
+        self.width = width
+        self.bounds = CGRect(x: 0, y: 0, width: width, height: height)
         delegate?.didUpdated?(seatsView: self)
     }
     
