@@ -186,8 +186,20 @@ class ASSeatsSelectionView: UIView, UIScrollViewDelegate, ASSeatsDelegate {
         } else {
             frame.origin.x = max(seatsScrollView.contentOffset.x / scale, 0)
             frame.origin.y = max(seatsScrollView.contentOffset.y / scale, 0)
-            frame.size.width = (seatsScrollView.contentSize.width - abs(seatsScrollView.contentOffset.x))/scale
-            frame.size.height = (seatsScrollView.contentSize.height - abs(seatsScrollView.contentOffset.y)) / scale
+            frame.size.width = seatsScrollView.frame.width / scale
+            if seatsScrollView.contentOffset.x < 0 {
+                frame.size.width = frame.size.width + seatsScrollView.contentOffset.x / scale
+            }
+            if (frame.origin.x + frame.size.width) > seatsScrollView.contentSize.width / scale {
+                frame.size.width = seatsScrollView.contentSize.width / scale - frame.origin.x
+            }
+            frame.size.height = seatsScrollView.frame.height / scale
+            if seatsScrollView.contentOffset.y < 0 {
+                frame.size.height = frame.size.height + seatsScrollView.contentOffset.y / scale
+            }
+            if (frame.origin.y + frame.size.height) > seatsScrollView.contentSize.height / scale {
+                frame.size.height = seatsScrollView.contentSize.height / scale - frame.origin.y
+            }
         }
         indicatorView.updateIndicatorWithFrame(frame: frame)
     }
