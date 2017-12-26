@@ -17,58 +17,59 @@ There are tow way to configure the seatsSelectionView
 ```swift
 // common configure
 func setupSeatsView() -> Void {
-seatsView.hallName = "大银幕"
-seatsView.hallLogoSize = CGSize(width: 200, height: 20)
-seatsView.hallNameColor = UIColor.green
-seatsView.indicatorColor = UIColor.orange
-seatsView.indicatorViewHeight = 64
-seatsView.rowIndexViewTextColor = UIColor.orange
-seatsView.rowIndexViewBackgroundColor = UIColor.gray.withAlphaComponent(0.5)
-seatsView.dataSource = self
-seatsView.delegate = self
+    seatsView.hallName = "大银幕"
+    seatsView.hallLogoSize = CGSize(width: 200, height: 20)
+    seatsView.hallNameColor = UIColor.green
+    seatsView.indicatorColor = UIColor.orange
+    seatsView.indicatorViewHeight = 64
+    seatsView.rowIndexViewTextColor = UIColor.orange
+    seatsView.rowIndexViewBackgroundColor = UIColor.gray.withAlphaComponent(0.5)
+    seatsView.dataSource = self
+    seatsView.delegate = self
 }
 
 // more swift like configuration
 func setupSeatsViewWithConfiguration() {
-let configuration: ASSeatsSelectionConfigure = [
-.hallLogoConfiguration(.hallName("7-11")),
-.hallLogoConfiguration(.hallLogoSize(CGSize(width: 200, height: 20))),
-.hallLogoConfiguration(.hallNameColor(UIColor.green)),
-.indicatorConfiguration(.indicatorBorderColor(UIColor.green)),
-.indicatorConfiguration(.indicatorViewHeight(64)),
-.indicatorConfiguration(.indicatorBorderColor(UIColor.orange)),
-.rowIndexConfiguration(.backgroundColor(UIColor.cyan.withAlphaComponent(0.5))),
-.rowIndexConfiguration(.titleColor(UIColor.purple)),
-.centerLineConfiguration(.lineColor(UIColor.red)),
-.centerLineConfiguration(.lineWidth(1)),
-.centerLineConfiguration(.isHiddenLine(.Horizontal, true)),
-]
-seatsView.setupWithConfiguration(configuration: configuration)
-seatsView.dataSource = self
-seatsView.delegate = self
+    let configuration: ASSeatsSelectionConfigure = [
+        .hallLogoConfiguration(.hallName("7-11")),
+        .hallLogoConfiguration(.hallLogoSize(CGSize(width: 200, height: 20))),
+        .hallLogoConfiguration(.hallNameColor(UIColor.green)),
+        .indicatorConfiguration(.indicatorBorderColor(UIColor.green)),
+        .indicatorConfiguration(.indicatorViewHeight(64)),
+        .indicatorConfiguration(.indicatorBorderColor(UIColor.orange)),
+        .rowIndexConfiguration(.backgroundColor(UIColor.cyan.withAlphaComponent(0.5))),
+        .rowIndexConfiguration(.titleColor(UIColor.purple)),
+        .centerLineConfiguration(.lineColor(UIColor.red)),
+        .centerLineConfiguration(.lineWidth(1)),
+        .centerLineConfiguration(.isHiddenLine(.Horizontal, true)),
+    ]
+    seatsView.setupWithConfiguration(configuration: configuration)
+    seatsView.dataSource = self
+    seatsView.delegate = self
 }
 ```
 Then you should implement ASSeatsSelectionViewDataSource, ASSeatsSelectionViewDelegate(optional)
 ```swift
 @objc protocol ASSeatsSelectionViewDataSource: NSObjectProtocol {
 
-func numberOfRowsIn(seatsSelectionView: ASSeatsSelectionView) -> Int
+    func numberOfRowsIn(seatsSelectionView: ASSeatsSelectionView) -> Int
 
-@objc optional func  seatsSelectionView(seatsSelectionView: ASSeatsSelectionView, numberOfColumnsIn row: Int) -> Int
+    @objc optional func  seatsSelectionView(seatsSelectionView: ASSeatsSelectionView, numberOfColumnsIn row: Int) -> Int
 
-@objc optional func seatsSelectionView(seatsSelectionView: ASSeatsSelectionView, seatImageIn row:Int, column:Int, completion:(_ image: UIImage?)->Void)
+    @objc optional func seatsSelectionView(seatsSelectionView: ASSeatsSelectionView, seatImageIn row:Int, column:Int, completion:(_ image: UIImage?)->Void)
 
-@objc optional func seatsSelectionView(seatsSelectionView: ASSeatsSelectionView, seatWidthIn row:Int, column: Int) -> CGFloat
+    @objc optional func seatsSelectionView(seatsSelectionView: ASSeatsSelectionView, seatWidthIn row:Int, column: Int) -> CGFloat
 
-@objc optional func heightForRowIn(seatsSelectionView: ASSeatsSelectionView) -> CGFloat
+    @objc optional func heightForRowIn(seatsSelectionView: ASSeatsSelectionView) -> CGFloat
 
-@objc optional func seatsSelectionView(seatsSelectionView: ASSeatsSelectionView, indexTitleIn row: Int) -> String
+    @objc optional func seatsSelectionView(seatsSelectionView: ASSeatsSelectionView, indexTitleIn row: Int) -> String
 
 }
 
 @objc protocol ASSeatsSelectionViewDelegate: NSObjectProtocol {
-@objc optional func seatsSelectionView(_ seatsSelectionView: ASSeatsSelectionView, didSelectAt row: Int, column: Int)
+    @objc optional func seatsSelectionView(_ seatsSelectionView: ASSeatsSelectionView, didSelectAt row: Int, column: Int)
 }
 ```
 For more details you can check out the [ViewController](ASSeatsSelection/ViewController.swift) file.
+
 
