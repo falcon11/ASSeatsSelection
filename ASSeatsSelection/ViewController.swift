@@ -49,7 +49,14 @@ class ViewController: UIViewController, ASSeatsSelectionViewDataSource, ASSeatsS
         super.viewDidLoad()
         seats = b
         // Do any additional setup after loading the view, typically from a nib.
+//        setupSeatsViewWithNoConfiguration()
+//        setupSeatsView()
         setupSeatsViewWithConfiguration()
+    }
+    
+    func setupSeatsViewWithNoConfiguration() {
+        seatsView.dataSource = self
+        seatsView.delegate = self
     }
     
     func setupSeatsView() -> Void {

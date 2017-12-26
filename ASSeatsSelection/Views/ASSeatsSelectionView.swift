@@ -49,7 +49,7 @@ class ASSeatsSelectionView: UIView, UIScrollViewDelegate, ASSeatsDelegate {
         }
     }
     
-    var hallNameColor: UIColor = UIColor.red {
+    var hallNameColor: UIColor = UIColor.darkText {
         didSet {
             hallLogoView.hallNameColor = hallNameColor
         }
