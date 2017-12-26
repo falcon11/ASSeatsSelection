@@ -28,7 +28,7 @@ class ViewController: UIViewController, ASSeatsSelectionViewDataSource, ASSeatsS
         [1,2,3,4,5,1,2,3,1,2,3,],
         [1,2,3,4,5,1,2,3,1,2,3,1,2,3,],
         [1,],
-        [],
+        [], //if this row have no seats or is corridor, you can just use an empty array
         [1,2,3,4,5,1,2,3,1,2,3,],
         [1,2,3,4,5,1,2,3,1,2,3,1,2,3,],
         [1,2,3,4,5,1,2,3,1,2,3,],
@@ -49,6 +49,10 @@ class ViewController: UIViewController, ASSeatsSelectionViewDataSource, ASSeatsS
         super.viewDidLoad()
         seats = b
         // Do any additional setup after loading the view, typically from a nib.
+        setupSeatsViewWithConfiguration()
+    }
+    
+    func setupSeatsView() -> Void {
         seatsView.hallName = "大银幕"
         seatsView.hallLogoSize = CGSize(width: 200, height: 20)
         seatsView.hallNameColor = UIColor.green
@@ -56,6 +60,25 @@ class ViewController: UIViewController, ASSeatsSelectionViewDataSource, ASSeatsS
         seatsView.indicatorViewHeight = 64
         seatsView.rowIndexViewTextColor = UIColor.orange
         seatsView.rowIndexViewBackgroundColor = UIColor.gray.withAlphaComponent(0.5)
+        seatsView.dataSource = self
+        seatsView.delegate = self
+    }
+    
+    func setupSeatsViewWithConfiguration() {
+        let configuration: ASSeatsSelectionConfigure = [
+            .hallLogoConfiguration(.hallName("7-11")),
+            .hallLogoConfiguration(.hallLogoSize(CGSize(width: 200, height: 20))),
+            .hallLogoConfiguration(.hallNameColor(UIColor.green)),
+            .indicatorConfiguration(.indicatorBorderColor(UIColor.green)),
+            .indicatorConfiguration(.indicatorViewHeight(64)),
+            .indicatorConfiguration(.indicatorBorderColor(UIColor.orange)),
+            .rowIndexConfiguration(.backgroundColor(UIColor.cyan.withAlphaComponent(0.5))),
+            .rowIndexConfiguration(.titleColor(UIColor.purple)),
+            .centerLineConfiguration(.lineColor(UIColor.red)),
+            .centerLineConfiguration(.lineWidth(1)),
+            .centerLineConfiguration(.isHiddenLine(.Horizontal, true)),
+        ]
+        seatsView.setupWithConfiguration(configuration: configuration)
         seatsView.dataSource = self
         seatsView.delegate = self
     }

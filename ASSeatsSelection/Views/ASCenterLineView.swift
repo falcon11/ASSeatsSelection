@@ -8,7 +8,7 @@
 
 import UIKit
 
-enum ASCenterLineDirection {
+public enum ASCenterLineDirection {
     case Horizontal
     case Vertical
 }

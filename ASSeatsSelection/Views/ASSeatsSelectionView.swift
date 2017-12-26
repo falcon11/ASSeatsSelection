@@ -18,7 +18,7 @@ import UIKit
     
     @objc optional func  seatsSelectionView(seatsSelectionView: ASSeatsSelectionView, numberOfColumnsIn row: Int) -> Int
     
-    func seatsSelectionView(seatsSelectionView: ASSeatsSelectionView, seatImageIn row:Int, column:Int, completion:(_ image: UIImage?)->Void)
+    @objc optional func seatsSelectionView(seatsSelectionView: ASSeatsSelectionView, seatImageIn row:Int, column:Int, completion:(_ image: UIImage?)->Void)
     
     @objc optional func seatsSelectionView(seatsSelectionView: ASSeatsSelectionView, seatWidthIn row:Int, column: Int) -> CGFloat
     
@@ -97,6 +97,32 @@ class ASSeatsSelectionView: UIView, UIScrollViewDelegate, ASSeatsDelegate {
         }
     }
     
+    var centerLineColor: UIColor = UIColor.orange {
+        didSet {
+            self.verticalCenterLineView.lineColor = centerLineColor
+            self.horizontalCenterLineview.lineColor = centerLineColor
+        }
+    }
+    
+    var centerLineWidth: CGFloat = 1 {
+        didSet {
+            self.verticalCenterLineView.width = centerLineWidth
+            self.horizontalCenterLineview.height = centerLineWidth
+        }
+    }
+    
+    var isHiddenVerticalCenterLine: Bool = false {
+        didSet {
+            self.verticalCenterLineView.isHidden = isHiddenVerticalCenterLine
+        }
+    }
+    
+    var isHiddenHorizontalCenterLine: Bool = false {
+        didSet {
+            self.horizontalCenterLineview.isHidden = isHiddenHorizontalCenterLine
+        }
+    }
+    
     private lazy var hallLogoView: ASHallLogoView = {
         var hallLogoView = ASHallLogoView(frame: CGRect(x: 0, y: 0, width: 200, height: 20))
         hallLogoView.hallName = "银幕"
@@ -130,7 +156,7 @@ class ASSeatsSelectionView: UIView, UIScrollViewDelegate, ASSeatsDelegate {
     private lazy var horizontalCenterLineview: ASCenterLineView = {
         var centerLineView = ASCenterLineView()
         centerLineView.direction = .Horizontal
-        centerLineView.height = 1
+        centerLineView.height = centerLineWidth
         seatsScrollView.insertSubview(centerLineView, belowSubview: seatsView)
         return centerLineView
     }()
@@ -138,7 +164,7 @@ class ASSeatsSelectionView: UIView, UIScrollViewDelegate, ASSeatsDelegate {
     private lazy var verticalCenterLineView: ASCenterLineView = {
         var centerLineView = ASCenterLineView()
         centerLineView.direction = .Vertical
-        centerLineView.width = 1
+        centerLineView.width = centerLineWidth
         seatsScrollView.insertSubview(centerLineView, belowSubview: seatsView)
         return centerLineView
     }()
@@ -182,6 +208,50 @@ class ASSeatsSelectionView: UIView, UIScrollViewDelegate, ASSeatsDelegate {
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+    }
+    
+    
+    /// use this method to customize seats selection view
+    ///
+    /// - Parameter configuration: a configuration array
+    func setupWithConfiguration(configuration: ASSeatsSelectionConfigure) -> Void {
+        for item in configuration {
+            switch item {
+            case .hallLogoConfiguration(let hallLogoConfiguration):
+                switch hallLogoConfiguration {
+                case .hallLogoImage(let image): hallLogoImage = image
+                case .hallLogoSize(let size): hallLogoSize = size
+                case .hallName(let name): hallName = name
+                case .hallNameColor(let color): hallNameColor = color
+                case .isHallLogoHidden(let ishidden): isHallLogoViewHidden = ishidden
+                default: break
+                }
+            case .indicatorConfiguration(let indicatorConfiguration):
+                switch indicatorConfiguration {
+                case .indicatorBorderColor(let color): indicatorColor = color
+                case .indicatorViewHeight(let height): indicatorViewHeight = height
+                default: break
+                }
+            case .rowIndexConfiguration(let rowIndexConfiguration):
+                switch rowIndexConfiguration {
+                case .backgroundColor(let color): rowIndexViewBackgroundColor = color
+                case .titleColor(let color): rowIndexViewTextColor = color
+                default: break
+                }
+            case .centerLineConfiguration(let centerLineConfiguration):
+                switch centerLineConfiguration {
+                case .lineColor(let color): centerLineColor = color
+                case .lineWidth(let width): centerLineWidth = width
+                case .isHiddenLine(let direction, let isHidden):
+                    switch direction {
+                    case .Horizontal: isHiddenHorizontalCenterLine = isHidden
+                    case .Vertical: isHiddenVerticalCenterLine = isHidden
+                    }
+                default: break
+                }
+            default: break
+            }
+        }
     }
     
     func reloadSeatsSelectionView() {
@@ -388,7 +458,7 @@ extension ASSeatsSelectionView: ASSeatsDataSource, ASRowIndexViewDataSource {
     }
     
     func seatImageFor(_ row: Int, column: Int, completion: (UIImage?) -> Void) {
-        dataSource?.seatsSelectionView(seatsSelectionView: self, seatImageIn: row, column: column, completion: { (image) in
+        dataSource?.seatsSelectionView?(seatsSelectionView: self, seatImageIn: row, column: column, completion: { (image) in
             completion(image)
         })
     }
