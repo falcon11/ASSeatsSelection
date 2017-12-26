@@ -12,7 +12,7 @@ A seats selection view. Used in movie seats selection or others.
 
 ### Usage
 Just copy file in the Views and Models Folder to your project
-By default there is no model concept, but you can use a seat model like [ASSeatModel](ASSeatsSelection/ASSeatsSelection/Models/ASSeatModel.swift) or your custom model in yourself dataSource.
+By default there is no model concept, but you can use a seat model like [ASSeatModel](ASSeatsSelection/Models/ASSeatModel.swift) or your custom model in yourself dataSource.
 There are tow way to configure the seatsSelectionView
 ```swift
 // common configure
@@ -70,5 +70,5 @@ func numberOfRowsIn(seatsSelectionView: ASSeatsSelectionView) -> Int
 @objc optional func seatsSelectionView(_ seatsSelectionView: ASSeatsSelectionView, didSelectAt row: Int, column: Int)
 }
 ```
-For more details you can check out the [ViewController](ASSeatsSelection/ASSeatsSelection/ViewController.swift) file.
+For more details you can check out the [ViewController](ASSeatsSelection/ViewController.swift) file.
 
